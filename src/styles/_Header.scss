@@ -1,0 +1,50 @@
+.header {
+  -webkit-app-region: drag;
+
+  background: $contrast;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  color: $white;
+
+  &.pro {
+    background: #4cebce;
+  }
+
+  svg {
+    -webkit-app-region: no-drag;
+  }
+
+  &__right {
+    //width: 42px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__center {
+    text-transform: uppercase;
+    font-family: 'Jockey One', sans-serif;
+  }
+
+  &__left {
+    display: flex;
+    justify-content: flex-end;
+
+    width: 16px;
+
+    svg {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+#close:hover {
+  color: $red;
+}
+
+#tray:hover {
+  opacity: .6;
+}

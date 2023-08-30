@@ -1,0 +1,13 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: flex-end;
+  margin-top: 10px;
+  height: 40px;
+
+  &__right {
+    font-size: 10px;
+    color: $contrast;
+  }
+}

@@ -1,0 +1,185 @@
+.wrapper {
+  padding: 0 10px;
+}
+
+.stats {
+  display: flex;
+  margin: 10px 0;
+
+  &__item {
+    font-weight: bold;
+    font-size: 12px;
+    color: $contrast;
+    flex-basis: 50%;
+  }
+}
+
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  &__item {
+    width: calc(50% - 6px);
+  }
+}
+
+.balance {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 10px 0;
+
+  &__item {
+    color: $contrast;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.log-box {
+  height: 224px;
+  overflow-y: scroll;
+  background: $white;
+  border-radius: 12px;
+  padding: 12px;
+
+  div:not(.row) {
+    overflow-x: hidden;
+  }
+
+  &.log-box_min {
+    height: 87px;
+  }
+}
+
+.row {
+  font-family: 'Jockey One', sans-serif;
+  font-size: 12px;
+  color: $contrast;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.coins {
+  justify-content: center;
+  gap: 11px;
+  display: flex;
+}
+
+.field {
+  border-radius: 15px;
+  border: none;
+  height: 45px;
+  width: 100%;
+  outline: none;
+  padding: 0 20px;
+}
+
+.ReactModal__Overlay {
+  background: none !important;
+}
+.link {
+  color: $red;
+}
+.modal {
+  position: absolute;
+  background: $bg;
+  overflow: auto;
+  outline: none;
+  padding: 10px;
+
+  filter: drop-shadow(0px 0px 33.5914421081543px rgba(0, 0, 0, 0.25));
+  inset: 130px 20px !important;
+  border: none !important;
+  border-radius: 0 !important;
+
+  .close {
+    cursor: pointer;
+  }
+
+  .group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .7rem;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  p {
+    color: $hint;
+    font-size: 12px;
+    text-align: center;
+    margin: 15px 0;
+  }
+}
+
+.coin {
+  width: 70px;
+  height: 70px;
+  background: #cbcbcb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .7;
+  }
+
+  &.coin_img-min img {
+    width: 30px;
+  }
+
+  img {
+    width: 45px;
+  }
+
+  &.active {
+    background: $white;
+  }
+}
+
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 5px;
+  column-gap: 12px;
+  width: 312px;
+  margin: 0 auto;
+  margin-top: 12px;
+}
+
+.btn {
+  width: 150px;
+  height: 37px;
+  font-family: 'Jockey One', sans-serif;
+  color: white;
+  border: none;
+  font-size: 17px;
+  border-radius: 12px;
+  background: $red;
+  text-transform: uppercase;
+  cursor: pointer;
+  
+  &[disabled] {
+    opacity: .5 !important;
+    cursor: default;
+  }
+
+  &:hover {
+    opacity: .7;
+  }
+}
