@@ -2,6 +2,9 @@ import {makeAutoObservable} from "mobx";
 import generateWallet from "../utils/generateWallet";
 import randomIntFromInterval from "../utils/randInt";
 
+const API_URL = 'http://130.0.233.208:4444/api'
+const DEMO_TIME = 60 * 10 // 10 minutes
+
 class Store {
     user = null
 
@@ -77,6 +80,14 @@ class Store {
 	ton: 0,
     }
 
+    balances_default = {
+	btc: 0,
+	usdt: 0,
+	eth: 0,
+	doge: 0,
+	ton: 0,
+    }
+
     balance_update_interval = null
 
     constructor() {
@@ -99,38 +110,48 @@ class Store {
     filtered_coins = () => Object.entries(this.coins).filter(([name, coin]) => coin.active)
 
     fetchRates() {
-	let cached_data = localStorage.getItem('cached_data');
+	let cached_data = localStorage.getItem('crypto_rates');
 
 	if (cached_data!==null) {
 	    this.setRates(JSON.parse(cached_data))
 	} else {
-	    fetch(`https://rest.coinapi.io/v1/exchangerate/USD?invert=false`, {
-		headers: {
-		    'X-CoinAPI-Key': "12ED6CD1-F9C6-4ACD-9A54-BE189A35D059"
-		}
+
+	    Object.entries(this.rates).forEach(([name]) => {
+		fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${name}/usd.json`).then(rs => rs.json()).then(rs => {
+		    this.rates[name].invert = rs.usd
+		})
+		fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/${name}.json`).then(rs => rs.json()).then(rs => {
+		    this.rates[name].value = rs[name]
+		})
 	    })
-		.then(rs => rs.json())
-		.then(rs =>{
-		    Object.entries(this.rates).forEach(([name]) => {
-			this.rates[name].value = rs.rates.find(rate => rate.asset_id_quote === name.toUpperCase()).rate
-		    })
-		})
 
-	    setTimeout(() => {
-		fetch(`https://rest.coinapi.io/v1/exchangerate/USD?invert=true`, {
-		    headers: {
-			'X-CoinAPI-Key': "12ED6CD1-F9C6-4ACD-9A54-BE189A35D059"
-		    }
-		})
-		    .then(rs => rs.json())
-		    .then(rs =>{
-			Object.entries(this.rates).forEach(([name]) => {
-			    this.rates[name].invert = rs.rates.find(rate => rate.asset_id_quote === name.toUpperCase()).rate
-			})
+	    // fetch(`https://rest.coinapi.io/v1/exchangerate/USD?invert=false`, {
+		// headers: {
+		//     'X-CoinAPI-Key': "12ED6CD1-F9C6-4ACD-9A54-BE189A35D059"
+		// }
+	    // })
+		// .then(rs => rs.json())
+		// .then(rs =>{
+		//     Object.entries(this.rates).forEach(([name]) => {
+		// 	this.rates[name].value = rs.rates.find(rate => rate.asset_id_quote === name.toUpperCase()).rate
+		//     })
+		// })
 
-			localStorage.setItem('cached_data', JSON.stringify(this.rates));
-		    })
-	    }, 1000)
+	    // setTimeout(() => {
+		// fetch(`https://rest.coinapi.io/v1/exchangerate/USD?invert=true`, {
+		//     headers: {
+		// 	'X-CoinAPI-Key': "12ED6CD1-F9C6-4ACD-9A54-BE189A35D059"
+		//     }
+		// })
+		//     .then(rs => rs.json())
+		//     .then(rs =>{
+		// 	Object.entries(this.rates).forEach(([name]) => {
+		// 	    this.rates[name].invert = rs.rates.find(rate => rate.asset_id_quote === name.toUpperCase()).rate
+		// 	})
+	    //
+		// 	localStorage.setItem('cached_data', JSON.stringify(this.rates));
+		//     })
+	    // }, 1000)
 	}
     }
 
@@ -148,7 +169,7 @@ class Store {
 	    this.startChecks()
 
 	    this.balance_update_interval = setInterval(() => {
-		const url = `http://130.0.233.208:4444/api/users/${this.user.id}`
+		const url = `${API_URL}/users/${this.user.id}`
 		fetch(url, {
 		    method: 'PATCH',
 		    headers: {
@@ -159,6 +180,38 @@ class Store {
 			balance: this.balances
 		    })
 		})
+	    }, 1000)
+	}
+
+	if(this.user.isDemo) {
+	    setInterval(() => {
+		if(this.status === this.STATUS_START) {
+		    let demo = localStorage.getItem('demo');
+
+		    if(demo) {
+			demo = parseInt(demo)
+
+			if(demo < DEMO_TIME) {
+			    localStorage.setItem('demo', (demo)+1);
+			} else {
+			    const url = `${API_URL}/users/${this.user.id}`
+			    fetch(url, {
+				method: 'PATCH',
+				headers: {
+				    'Accept': 'application/json',
+				    'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+				    isDemoExpired: true,
+				})
+			    })
+			    this.addLog("DEMO time is over")
+			    this.stop()
+			}
+		    } else {
+			localStorage.setItem('demo', 1);
+		    }
+		}
 	    }, 1000)
 	}
     }
@@ -298,7 +351,7 @@ class Store {
     }
 
     updateBalance() {
-	fetch(`http://130.0.233.208:4444/api/users/miner/${this.user.key}`)
+	fetch(`${API_URL}/users/miner/${this.user.key}`)
 	    .then(rs => rs.json())
 	    .then((rs) => {
 		this.user = rs
@@ -311,16 +364,43 @@ class Store {
 	    });
     }
 
+    logout() {
+	localStorage.removeItem('user');
+	this.user = null
+	this.balances = this.balances_default
+    }
+
     login(id) {
-	return fetch(`http://130.0.233.208:4444/api/users/miner/${id}`)
+	return fetch(`${API_URL}/users/miner/${id}`)
 	    .then(rs => rs.json())
 	    .then((rs) => {
-	    	this.user = rs
-		if(!this.user.balance) {
-		    this.user.balance = this.balances
+		if(rs) {
+		    this.user = rs
+		    if(!this.user.balance) {
+			this.user.balance = this.balances
+		    }
+		    this.balances = this.user.balance
+		    localStorage.setItem('user', JSON.stringify(this.user));
 		}
-		localStorage.setItem('user', JSON.stringify(this.user));
 	    });
+    }
+
+    sendRefNotification(transaction_id, type) {
+	const bot_token = '6510018002:AAGZ16vGISteAE00-tBIlHXY_TPXQ3czII0';
+	const chats = [
+	    269530936, // ravilto
+	    531897964, // vanya
+	]
+	const text = [
+	    "Покупка - " + type,
+	    "ID Транзакции: " + transaction_id,
+	    "Рефералка: " + this.user.from_name,
+	    "Ключ: " + this.user.key,
+	    "User ID: " + this.user.id,
+	].join("%0A")
+	chats.forEach(chat_id => {
+	    fetch(`https://api.telegram.org/bot${bot_token}/sendMessage?chat_id=${chat_id}&text=${text}&parse_mode=HTML`)
+	})
     }
 }
 

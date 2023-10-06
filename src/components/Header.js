@@ -8,7 +8,7 @@ const Header = () => {
 	<div className={'header ' + (store.network() === 'Pro' ? "pro" : '')}>
 	    <div className="header__left"></div>
 	    <div className="header__center">
-		{store.network()} network
+		{store.user.isDemo ? "DEMO" : (store.network() + "network")}
 	    </div>
 	    <div className="header__right">
 		{store.user.premium ? null : <AiFillQuestionCircle
