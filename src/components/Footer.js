@@ -8,7 +8,7 @@ const Footer = () => {
 		<img src="./img/logout.svg"/>
 	    </div>
 	    <div className="footer__right">
-		ver. e0.0.1
+		ver. 2.0.0
 	    </div>
 	</div>
     );
