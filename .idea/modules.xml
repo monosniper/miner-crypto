@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/fake-miner.iml" filepath="$PROJECT_DIR$/.idea/fake-miner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/crypto-miner-soft-site.iml" filepath="$PROJECT_DIR$/.idea/crypto-miner-soft-site.iml" />
     </modules>
   </component>
 </project>
