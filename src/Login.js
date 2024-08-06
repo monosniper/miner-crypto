@@ -7,8 +7,8 @@ const Login = () => {
     const [cookies, setCookie] = useCookies(['id']);
 
     useEffect(() => {
-	// setCookie('id', 'test')
-	console.log(cookies)
+        // setCookie('id', 'test')
+        console.log(cookies)
     }, [])
 
     const [id, setId] = useState('')
@@ -17,20 +17,25 @@ const Login = () => {
     const handleChangeId = e => setId(e.target.value)
 
     const login = () => {
-	store.login(id).then(() => {
-	    if(!store.user) {
-		setShowError(true)
-	    }
-	})
+        store.login(id).then(() => {
+            if (!store.user) {
+                setShowError(true)
+            }
+        })
     }
 
+	const getDemo = () => {
+		store.getDemo()
+	}
+
     return (
-	<div className={"form"}>
-	    <p>Enter your license key:</p>
-	    {showError ? <p className="error">Invalid license key!</p> : null}
-	    <input className={'field'} type="text" value={id} onChange={handleChangeId}/>
-	    <button disabled={id.trim() === ''} className="btn" onClick={login}>Login</button>
-	</div>
+        <div className={"form"}>
+            <p>Enter your license key:</p>
+            {showError ? <p className="error">Invalid license key!</p> : null}
+            <input className={'field'} type="text" value={id} onChange={handleChangeId}/>
+            <button disabled={id.trim() === ''} className="btn" onClick={login}>Login</button>
+            <button className="get-demo" onClick={getDemo}>Get DEMO</button>
+        </div>
     );
 };
 
