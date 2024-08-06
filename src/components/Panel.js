@@ -71,19 +71,19 @@ const Panel = () => {
     }
 
     const handleStart = () => {
-        if(store.user.premium) store.start()
+        if(store.user?.premium) store.start()
         else {
-            if (store.user.isDemo && store.user.isDemoExpired) {
+            if (store.user?.isDemo && store.user?.isDemoExpired) {
                 showDemoIsOver()
             } else {
-                if(store.user.isDemo || store.user.isNetwork) store.start()
+                if(store.user?.isDemo || store.user?.isNetwork) store.start()
                 else setShowNetworkModal(true)
             }
         }
     }
 
     useEffect(() => {
-        if (store.user.isDemoExpired) {
+        if (store.user?.isDemoExpired) {
             showDemoIsOver()
         }
 

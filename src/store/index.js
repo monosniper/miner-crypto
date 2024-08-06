@@ -2,8 +2,8 @@ import {makeAutoObservable} from "mobx";
 import generateWallet from "../utils/generateWallet";
 import randomIntFromInterval from "../utils/randInt";
 
-const API_URL = 'http://127.0.0.1:4444/api'
-// const API_URL = 'http://38.180.45.163:4444/api'
+// const API_URL = 'http://127.0.0.1:4444/api'
+const API_URL = 'http://185.65.247.203:4444/api'
 const DEMO_TIME = 60 * 10 // 10 minutes
 
 class Store {

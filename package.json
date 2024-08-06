@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
+    "@sweetalert/with-react": "^0.1.1",
     "mobx": "^6.10.0",
     "mobx-react-lite": "^4.0.4",
     "react": "^18.2.0",
@@ -12,7 +13,8 @@
     "react-mobx": "^0.0.4",
     "react-modal": "^3.16.1",
     "react-scripts": "5.0.1",
-    "react-scroll-to-bottom": "^4.2.0"
+    "react-scroll-to-bottom": "^4.2.0",
+    "react-tooltip": "^5.28.0"
   },
   "scripts": {
     "start": "react-scripts start",
