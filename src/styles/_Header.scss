@@ -1,22 +1,50 @@
 .header {
+  -webkit-app-region: drag;
+
+  background: $contrast;
+  height: 37px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  padding: 0 10px;
+  color: $white;
+
+  &.pro {
+    background: #4cebce;
+  }
+
+  svg {
+    -webkit-app-region: no-drag;
+  }
+
+  &__right {
+    //width: 42px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__center {
+    text-transform: uppercase;
+    font-family: 'Jockey One', sans-serif;
+  }
 
   &__left {
     display: flex;
-    gap: 10px;
-    align-items: center;
-  }
+    justify-content: flex-end;
 
-  &__title {
-    font-size: 24px;
-    font-weight: bold;
-  }
+    width: 16px;
 
-  &__icon {
-    width: 40px;
-    height: 40px;
+    svg {
+      margin-right: 5px;
+      cursor: pointer;
+    }
   }
+}
+
+#close:hover {
+  color: $red;
+}
+
+#tray:hover {
+  opacity: .6;
 }

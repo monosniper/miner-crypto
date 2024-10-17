@@ -2,19 +2,19 @@
 @import "./vars.scss";
 @import "./Header.scss";
 @import "./Main.scss";
+@import "./Login.scss";
 @import "./Footer.scss";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Montserrat Alternates', sans-serif;
 }
 
 body {
   background: $bg;
   overflow: hidden;
-  color: white;
 }
 
 *::-webkit-scrollbar {
@@ -28,6 +28,6 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #656565;
+  background-color: transparent;
   border-radius: 5px;
 }
